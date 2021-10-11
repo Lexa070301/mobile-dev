@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">laba2</string>
+    <string name="title">Notifications</string>
+    <string name="name1">Roman Kamushken</string>
+    <string name="time1">2 days ago</string>
+    <string name="text1">Check out awesome updates for Android design kit for Figma. Now more screens and more categories.</string>
+    <string name="replays1">117 replays</string>
+    <string name="name2">Tina Turbina</string>
+    <string name="time2">18 minutes ago</string>
+    <string name="text2">“into component container and with resizing constraints set????”</string>
+    <string name="replays2">117 replays</string>
+    <string name="name3">Tomek Kuwalskij</string>
+    <string name="time3">2 days ago</string>
+    <string name="text3">“into component container and with resizing constraints set????”</string>
+    <string name="replays3">117 replays</string>
+    <string name="menu_account">Account</string>
 </resources>
