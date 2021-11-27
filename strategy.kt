@@ -2,11 +2,14 @@
 Стратегия — это поведенческий паттерн, определяющий семейство схожих алгоритмов и помещающий каждый из них в собственный класс, после чего алгоритмы можно взаимозаменять прямо во время исполнения программы.
  */
 
+// Интерфейс бронирования
 interface BookingStrategy {
+    // Тариф
     val fare: Double
 }
 
-class CarBookingStrategy : BookingStrategy {
+// Класс бронирования машин
+class CarBookingStrategy: BookingStrategy {
 
     override val fare: Double = 12.5
 
@@ -15,7 +18,8 @@ class CarBookingStrategy : BookingStrategy {
     }
 }
 
-class TrainBookingStrategy : BookingStrategy {
+// Класс бронирования поездов
+class TrainBookingStrategy: BookingStrategy {
 
     override val fare: Double = 8.5
 
@@ -24,6 +28,7 @@ class TrainBookingStrategy : BookingStrategy {
     }
 }
 
+// Класс клиента
 class Customer(var bookingStrategy: BookingStrategy) {
 
     fun calculateFare(numOfPassangeres: Int): Double {
@@ -33,14 +38,16 @@ class Customer(var bookingStrategy: BookingStrategy) {
     }
 }
 
-fun main(args: Array<String>) {
 
-    //CarBooking Strategy
+// Паттерн Стратегия позволяет нам "налету" менять объект бронирования клиента
+fun main() {
+    // Создаём клиента, которых хочет бранировать машины
     val cust = Customer(CarBookingStrategy())
+    // Высчитываем тариф для 5 человек
     var fare = cust.calculateFare(5)
     println(fare)
 
-    //TrainBooking Strategy
+    // Теперь клиент хочет бранировать поезд
     cust.bookingStrategy = TrainBookingStrategy()
     fare = cust.calculateFare(5)
     println(fare)

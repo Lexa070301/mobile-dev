@@ -2,22 +2,26 @@
 Фабричный метод — это порождающий паттерн проектирования, определяющий общий интерфейс для создания объектов, позволяющий подклассам изменять тип создаваемых объектов.
  */
 
+// интерфейс документа
 interface Document {
     fun showDocumentInfo()
 }
 
-class DrawingDocument : Document {
+// Класс рисунка
+class DrawingDocument: Document {
     override fun showDocumentInfo() {
         println("This is a drawing document")
     }
 }
 
-class WordDocument : Document {
+// Класс текстового документа
+class WordDocument: Document {
     override fun showDocumentInfo() {
         println("This is a word document")
     }
 }
 
+// Абстрактный класс приложения
 abstract class Application {
     abstract fun createDocument(): Document
 
@@ -32,16 +36,21 @@ abstract class Application {
     }
 }
 
-class DrawingApplication : Application() {
+
+// Класс приложения для рисунков
+class DrawingApplication: Application() {
     override fun createDocument() = DrawingDocument()
 }
 
-class WordApplication : Application() {
+// Класс приложения для текстовых документов
+class WordApplication: Application() {
     override fun createDocument() = WordDocument()
 }
 
 enum class DocumentType { Drawing, Word }
 
+
+// Благодаря паттерну фабрики мы можем создавать сколько угодно разных типов документов и приложений
 fun main() {
     val drawingApplication = Application.getApplicationDocument(DocumentType.Drawing)
     val drawingDocument = drawingApplication.createDocument()
