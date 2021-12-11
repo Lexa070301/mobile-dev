@@ -9,9 +9,7 @@ import com.example.laba2.databinding.ItemTestBinding
 
 
 class PersonAdapter(
-    var listperson: List<Person>,
-    private val clickCard: (Person) -> Unit,
-    private val clickCardLike: (Person) -> Unit
+    var listperson: List<String> = listOf()
 ): RecyclerView.Adapter<PersonAdapter.MyHolder>() {
 
     override fun onCreateViewHolder(
@@ -19,38 +17,24 @@ class PersonAdapter(
         viewType: Int
     ): MyHolder {
         val binding = ItemTestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyHolder(binding, clickCard, clickCardLike)
+        return MyHolder(binding)
     }
 
     override fun onBindViewHolder(
         holder: MyHolder,
         position: Int
     ) {
-        val person = listperson[position]
-        holder.bind(person)
+        val text = listperson[position]
+        holder.bind(text)
     }
     override fun getItemCount(): Int {
         return listperson.size
     }
     inner class MyHolder internal constructor(
         private val binding: ItemTestBinding,
-        private val clickCard: (Person) -> Unit,
-        private val clickCardLike: (Person) -> Unit
     ): RecyclerView.ViewHolder(binding.root) {
-        fun bind(person: Person) = binding.run{
-            name.text = person.name
-            sex.text = person.sex
-            date.text = person.date
-            text.text = person.text
-            image.load(person.image){
-                transformations(RoundedCornersTransformation(50f))
-            }
-            binding.card.setOnClickListener {
-                clickCard.invoke(person)
-            }
-            binding.like.setOnClickListener {
-                clickCardLike.invoke(person)
-            }
+        fun bind(text: String) = binding.run{
+            textView.text = text
         }
     }
 }
