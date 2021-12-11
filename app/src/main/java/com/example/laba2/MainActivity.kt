@@ -19,7 +19,11 @@ class MainActivity : AppCompatActivity() {
         if (lastFragmentAsyncTask == null) {
             val transactionInitialization = supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, FragmentAsyncTask(), FragmentAsyncTask.MyTag)
+                .add(
+                    R.id.fragment_container,
+                    FragmentAsyncTask(),
+                    FragmentAsyncTask.MyTag
+                )
                 .addToBackStack("added fragment")
             transactionInitialization.commit()
         } else {

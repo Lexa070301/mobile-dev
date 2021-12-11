@@ -16,7 +16,11 @@ class PersonAdapter(
         parent: ViewGroup,
         viewType: Int
     ): MyHolder {
-        val binding = ItemTestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTestBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return MyHolder(binding)
     }
 

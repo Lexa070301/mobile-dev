@@ -19,13 +19,11 @@ import java.util.concurrent.TimeUnit
 class FragmentAsyncTask : Fragment(), TaskCallbacks {
     private lateinit var binding: FrameAsyncTaskBinding
 
-    // Добавленные переменные
+    // Добавленные переменных
     private var adapter: PersonAdapter = PersonAdapter()
-
     private var handler: Handler? = null
     private var callbacks: TaskCallbacks? = null
-    private var myTask: MyAsyncTask? = null
-
+    private var myAsync: MyAsyncTask? = null
     private var listItem: MutableList<String> = mutableListOf()
 
     override fun onCreateView(
@@ -33,7 +31,11 @@ class FragmentAsyncTask : Fragment(), TaskCallbacks {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FrameAsyncTaskBinding.inflate(inflater, container, false)
+        binding = FrameAsyncTaskBinding.inflate(
+            inflater,
+            container,
+            false
+        )
         return binding.root
     }
 
@@ -45,7 +47,10 @@ class FragmentAsyncTask : Fragment(), TaskCallbacks {
         startTask()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
         // иницилизируем RecycleView
         setupRecycleView()
@@ -54,10 +59,13 @@ class FragmentAsyncTask : Fragment(), TaskCallbacks {
     // Подключем recycleView и настраиваем его
     private fun setupRecycleView() {
         binding.recyclerView.layoutManager =
-            LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+            LinearLayoutManager(
+                activity,
+                RecyclerView.VERTICAL,
+                false
+            )
         binding.recyclerView.adapter = adapter
     }
-
 
     // Объявляем AsyncTask
     @SuppressLint("StaticFieldLeak")
@@ -68,20 +76,19 @@ class FragmentAsyncTask : Fragment(), TaskCallbacks {
 
         override fun doInBackground(vararg params: Unit?) {
             Log.d("Started", "I'm Started")
-            try {
-                for (i in 0..2) {
-                    TimeUnit.SECONDS.sleep(1)
-                    if (isCancelled) break
-                }
-            } catch (e: InterruptedIOException) {
-                e.printStackTrace()
+            for (i in 0..2) {
+                TimeUnit.SECONDS.sleep(1)
+                isCancelled && break
             }
         }
 
         override fun onPostExecute(result: Unit?) {
             callbacks?.let {
                 for (i in 1..100) {
-                    handler?.sendEmptyMessageDelayed(i, ((i - 1) * 2000).toLong())
+                    handler?.sendEmptyMessageDelayed(
+                        i,
+                        ((i - 1) * 2000).toLong()
+                    )
                 }
             }
         }
@@ -89,14 +96,14 @@ class FragmentAsyncTask : Fragment(), TaskCallbacks {
 
     // Запускаем AsyncTask
     private fun startTask() {
-        myTask = MyAsyncTask()
+        myAsync = MyAsyncTask()
         val callback = Handler.Callback { msg ->
             callbacks?.onPostExecute("Message: " + msg.what.toString())
             false
         }
 
         handler = Handler(callback)
-        myTask!!.execute()
+        myAsync!!.execute()
     }
 
     override fun onPreExecuted() {
