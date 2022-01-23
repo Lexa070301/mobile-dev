@@ -4,25 +4,25 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Color
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication6.data.Node
 import com.example.myapplication6.adapters.NodeClickListener
 import com.example.myapplication6.adapters.NodeListAdapter
+import com.example.myapplication6.data.Node
 import com.example.myapplication6.databinding.FragmentMainBinding
-import com.example.myapplication6.views.AddNodeActivity.Companion.VALUE
-import com.example.myapplication6.views.AddNodeActivity.Companion.REQUEST_CREATE_NODE
-import com.example.myapplication6.views.NodeRelActivity.Companion.NODE_ID
-import com.example.myapplication6.views.NodeRelActivity.Companion.REQUEST_UPDATE_RELATIONSHIPS
 import com.example.myapplication6.viewmodels.NodeViewModel
 import com.example.myapplication6.viewmodels.NodeViewModelFactory
 import com.example.myapplication6.viewmodels.RepositoryInitializer
+import com.example.myapplication6.views.AddNodeActivity.Companion.REQUEST_CREATE_NODE
+import com.example.myapplication6.views.AddNodeActivity.Companion.VALUE
+import com.example.myapplication6.views.NodeRelActivity.Companion.NODE_ID
+import com.example.myapplication6.views.NodeRelActivity.Companion.REQUEST_UPDATE_RELATIONSHIPS
 
 class MainFragment : Fragment() {
 
@@ -59,7 +59,8 @@ class MainFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.adapter = adapter
 
-        val viewModelFactory = NodeViewModelFactory(RepositoryInitializer.getRepository(requireContext()))
+        val viewModelFactory =
+            NodeViewModelFactory(RepositoryInitializer.getRepository(requireContext()))
         nodeViewModel = ViewModelProvider(
             this,
             viewModelFactory
@@ -81,6 +82,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
@@ -95,7 +97,19 @@ class MainFragment : Fragment() {
         if (requestCode == REQUEST_CREATE_NODE) {
             if (resultCode == RESULT_OK) {
                 data?.let {
-                    addNode(it)
+                    val node = Node(
+                        nodeItems.size + 1,
+                        it.getStringExtra(VALUE).toString().toInt(),
+                        mutableListOf()
+                    )
+                    nodeViewModel?.insertNode(node)
+                    nodeItems.add(
+                        NodeItem(
+                            node,
+                            Color.valueOf(Color.WHITE)
+                        )
+                    )
+                    adapter.notifyDataSetChanged()
                 }
             }
         }
@@ -105,58 +119,40 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setColors() {
-        val allNodes = nodeItems.map { it.node }
-        nodeItems.indices.forEach { index ->
-            val node = nodeItems[index].node
-            when {
-                node.hasParent(allNodes) && node.nodes.size > 0 ->
-                    nodeItems[index] = NodeItem(
-                        node,
-                        Color.valueOf(Color.rgb(255, 82, 82))
-                    )
-                node.hasParent(allNodes) ->
-                    nodeItems[index] = NodeItem(
-                        node,
-                        Color.valueOf(Color.rgb(33, 150, 243))
-                    )
-                node.nodes.size > 0 ->
-                    nodeItems[index] = NodeItem(
-                        node,
-                        Color.valueOf(Color.rgb(255, 235, 59))
-                    )
-            }
-        }
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     private fun updateNodes() {
         nodeViewModel?.getAllNodes()?.let { items ->
             nodeItems.clear()
             items.forEach { node ->
-                nodeItems.add(NodeItem(
-                    node,
-                    Color.valueOf(Color.WHITE))
+                nodeItems.add(
+                    NodeItem(
+                        node,
+                        Color.valueOf(Color.WHITE)
+                    )
                 )
             }
-            setColors()
+            val allNodes = nodeItems.map { it.node }
+            nodeItems.indices.forEach { index ->
+                val node = nodeItems[index].node
+                when {
+                    node.hasParent(allNodes) && node.nodes.size > 0 ->
+                        nodeItems[index] = NodeItem(
+                            node,
+                            Color.valueOf(Color.rgb(255, 82, 82))
+                        )
+                    node.hasParent(allNodes) ->
+                        nodeItems[index] = NodeItem(
+                            node,
+                            Color.valueOf(Color.rgb(33, 150, 243))
+                        )
+                    node.nodes.size > 0 ->
+                        nodeItems[index] = NodeItem(
+                            node,
+                            Color.valueOf(Color.rgb(255, 235, 59))
+                        )
+                }
+            }
             adapter.notifyDataSetChanged()
         }
-    }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun addNode(intent: Intent) {
-        val node = Node(
-            nodeItems.size + 1,
-            intent.getStringExtra(VALUE).toString().toInt(),
-            mutableListOf()
-        )
-        nodeViewModel?.insertNode(node)
-        nodeItems.add(NodeItem(
-            node,
-            Color.valueOf(Color.WHITE))
-        )
-        adapter.notifyDataSetChanged()
     }
 }

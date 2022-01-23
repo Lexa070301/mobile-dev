@@ -6,4 +6,4 @@ import com.example.myapplication6.data.Node
 data class NodeItem(
     val node: Node,
     val color: Color
-    )
+)

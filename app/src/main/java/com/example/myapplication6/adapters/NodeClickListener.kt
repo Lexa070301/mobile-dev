@@ -1,5 +1,5 @@
 package com.example.myapplication6.adapters
 
-interface NodeClickListener{
+interface NodeClickListener {
     fun showRelationshipActivity(id: Int)
 }

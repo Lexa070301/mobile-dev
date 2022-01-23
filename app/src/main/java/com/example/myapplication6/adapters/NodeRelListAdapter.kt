@@ -1,13 +1,12 @@
 package com.example.myapplication6.adapters
 
 import android.graphics.Color
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.myapplication6.databinding.ItemRelationshipBinding
-
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication6.data.Node
+import com.example.myapplication6.databinding.ItemRelationshipBinding
 import com.example.myapplication6.views.NodeRelItem
 import com.example.myapplication6.views.NodeRelType
 
@@ -37,34 +36,30 @@ class NodeRelListAdapter(
             text.setBackgroundColor(Color.WHITE)
         }
         text.text =
-            """id:${currentNode.id} value:${currentNode.value} - id:${item.node.id} value:${item.node.value}"""
+            """Нода 1:${currentNode.value} - Нода 2:${item.node.value}"""
 
         text.setOnClickListener {
-            switchRelationship(item)
-        }
-    }
-
-    private fun switchRelationship(item: NodeRelItem) {
-        val newRelationship = !item.isRelationship
-        when {
-            newRelationship -> when (nodeRelationshipType) {
-                NodeRelType.PARENT -> {
-                    currentNode.nodes.add(item.node)
-                    nodeRelationshipClickListener.onRelationshipClick(currentNode)
+            val newRelationship = !item.isRelationship
+            when {
+                newRelationship -> when (nodeRelationshipType) {
+                    NodeRelType.PARENT -> {
+                        currentNode.nodes.add(item.node)
+                        nodeRelationshipClickListener.onRelClick(currentNode)
+                    }
+                    else -> {
+                        item.node.nodes.add(currentNode)
+                        nodeRelationshipClickListener.onRelClick(item.node)
+                    }
                 }
-                else -> {
-                    item.node.nodes.add(currentNode)
-                    nodeRelationshipClickListener.onRelationshipClick(item.node)
-                }
-            }
-            else -> when (nodeRelationshipType) {
-                NodeRelType.PARENT -> {
-                    currentNode.nodes.remove(item.node)
-                    nodeRelationshipClickListener.onRelationshipClick(currentNode)
-                }
-                else -> {
-                    item.node.nodes.remove(currentNode)
-                    nodeRelationshipClickListener.onRelationshipClick(item.node)
+                else -> when (nodeRelationshipType) {
+                    NodeRelType.PARENT -> {
+                        currentNode.nodes.remove(item.node)
+                        nodeRelationshipClickListener.onRelClick(currentNode)
+                    }
+                    else -> {
+                        item.node.nodes.remove(currentNode)
+                        nodeRelationshipClickListener.onRelClick(item.node)
+                    }
                 }
             }
         }

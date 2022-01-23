@@ -31,7 +31,7 @@ class NodeListAdapter(
     ) {
         val currentNode = nodeItems[position].node
         val nodeColor = nodeItems[position].color
-        holder.nodeTextView.text = """id: ${currentNode.id} value: ${currentNode.value}"""
+        holder.nodeTextView.text = currentNode.value.toString()
         holder.nodeTextView.setBackgroundColor(nodeColor.toArgb())
 
         holder.nodeTextView.setOnClickListener {

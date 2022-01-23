@@ -18,7 +18,8 @@ data class Node(
     fun canBeChildFor(parent: Node): Boolean =
         (parent.id != id && !hasChild(this, parent) || parent.hasDirectChild(this))
 
-    fun hasParent(allNodes: List<Node>): Boolean = allNodes.any { parentNode -> parentNode.hasDirectChild(this) }
+    fun hasParent(allNodes: List<Node>): Boolean =
+        allNodes.any { parentNode -> parentNode.hasDirectChild(this) }
 
     fun hasDirectChild(node: Node): Boolean = nodes.any { it.id == node.id }
 

@@ -1,7 +1,10 @@
 package com.example.myapplication6.data
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 @Database(entities = [Node::class], version = 1, exportSchema = false)
 @TypeConverters(ListConverter::class)
@@ -15,12 +18,12 @@ abstract class NodeRoomDatabase : RoomDatabase() {
         fun getInstance(context: Context): NodeRoomDatabase? {
             if (database == null) {
                 synchronized(this) {
-                        val db = Room.databaseBuilder(
-                            context.applicationContext,
-                            NodeRoomDatabase::class.java,
-                            "node_database"
-                        ).fallbackToDestructiveMigration()
-                            .build()
+                    val db = Room.databaseBuilder(
+                        context.applicationContext,
+                        NodeRoomDatabase::class.java,
+                        "node_database"
+                    ).fallbackToDestructiveMigration()
+                        .build()
                     database = db
                     return db
                 }

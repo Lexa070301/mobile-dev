@@ -5,7 +5,7 @@ import com.example.myapplication6.data.NodeDao
 import com.example.myapplication6.data.NodeRepository
 import com.example.myapplication6.data.NodeRoomDatabase
 
-object RepositoryInitializer{
+object RepositoryInitializer {
 
     private var nodeDao: NodeDao? = null
     private lateinit var nodeRepository: NodeRepository

@@ -1,16 +1,16 @@
 package com.example.myapplication6.views
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication6.data.Node
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication6.adapters.NodeRelClickListener
 import com.example.myapplication6.adapters.NodeRelListAdapter
+import com.example.myapplication6.data.Node
 import com.example.myapplication6.databinding.FragmentNodeRelationshipsBinding
 import com.example.myapplication6.viewmodels.NodeViewModel
 import com.example.myapplication6.viewmodels.NodeViewModelFactory
@@ -40,33 +40,34 @@ class NodeRelFragment : Fragment() {
 
         recyclerView = binding.recyclerView
 
-        val viewModelFactory = NodeViewModelFactory(RepositoryInitializer.getRepository(requireContext()))
+        val viewModelFactory =
+            NodeViewModelFactory(RepositoryInitializer.getRepository(requireContext()))
         nodeViewModel = ViewModelProvider(
             this,
             viewModelFactory
         )
             .get(NodeViewModel::class.java)
 
-        initNodes()
+        init()
 
-        binding.parentButton.setOnClickListener{
+        binding.parentButton.setOnClickListener {
             binding.childButton.isChecked = false
             binding.parentButton.isChecked = true
             nodeRelationshipType = NodeRelType.PARENT
-            initNodes()
+            init()
         }
 
         binding.childButton.setOnClickListener {
             binding.childButton.isChecked = true
             binding.parentButton.isChecked = false
             nodeRelationshipType = NodeRelType.CHILD
-            initNodes()
+            init()
         }
 
         return binding.root
     }
 
-    private fun initNodes() {
+    private fun init() {
         val listNodes = nodeViewModel.getAllNodes()
         val nodeList: MutableList<NodeRelItem> = mutableListOf()
         val currentNode = listNodes.find { it.id == nodeId }!!
@@ -94,12 +95,12 @@ class NodeRelFragment : Fragment() {
                 currentNode,
                 nodeRelationshipType,
                 object : NodeRelClickListener {
-                    override fun onRelationshipClick(parent: Node) {
+                    override fun onRelClick(parent: Node) {
                         nodeViewModel.updateNode(
                             parent.id,
                             parent.nodes
                         ).invokeOnCompletion {
-                            initNodes()
+                            init()
                         }
                     }
                 }
@@ -108,9 +109,7 @@ class NodeRelFragment : Fragment() {
     }
 
     companion object {
-
         const val ARG_NODE_ID = ""
-
         fun newInstance(nodeId: Int) =
             NodeRelFragment().apply {
                 arguments = Bundle().apply {
