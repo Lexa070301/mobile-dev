@@ -10,8 +10,8 @@
         <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$USER_HOME$/Documents/folders/Учеба/5sem/mobile-dev" />
+            <option value="$USER_HOME$/Documents/folders/Учеба/5sem/mobile-dev/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
