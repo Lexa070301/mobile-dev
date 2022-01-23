@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:name="com.example.myapplication6.ParentRelationshipsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/margin_header"
+        android:layout_marginRight="@dimen/margin_header"
+        android:layout_marginTop="@dimen/margin_header"
+        android:layout_marginBottom="@dimen/margin_header"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/filterButtons"
+        tools:context=".views.NodeRelFragment" />
+    <LinearLayout
+        android:id="@+id/filterButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/margin_header"
+        android:layout_marginStart="@dimen/margin_header"
+        android:layout_marginBottom="@dimen/margin_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" >
+        <ToggleButton
+            android:id="@+id/parentButton"
+            android:background="@color/indigo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:checked="true"
+            android:textOff="@string/parents"
+            android:textOn="@string/parents"
+            android:text="@string/parents" />
+
+        <ToggleButton
+            android:id="@+id/childButton"
+            android:background="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:textOff="@string/children"
+            android:textOn="@string/children"
+            android:text="@string/children"
+            android:layout_marginStart="@dimen/margin_header" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
